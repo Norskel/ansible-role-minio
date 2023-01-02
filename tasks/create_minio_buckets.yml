@@ -31,3 +31,12 @@
     - "{{ minio_buckets }}"
   loop_control:
     loop_var: "bucket"
+
+- name: "Add quota"
+  command: "mc admin bucket quota {{ minio_alias }}/{{ bucket.name }} --hard {{ bucket.quota }}"
+  with_items:
+    - "{{ minio_buckets }}"
+  loop_control:
+    loop_var: "bucket"
+  when:
+    - bucket.quota is defined
